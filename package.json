@@ -1,0 +1,32 @@
+{
+  "name": "point-fairy",
+  "version": "1.0.0",
+  "description": "슬랙에서 포인트주는 요정",
+  "main": "index.js",
+  "scripts": {
+    "start": "node app.js",
+    "ssh": "sudo gcloud compute ssh instance-1",
+    "sshvpn" : "./sshvpn.sh",
+    "deploy": "sudo gcloud compute scp --recurse *.json *.js *.sh instance-1:/home/bsscco/point-fairy",
+    "deployvpn" : "./deployvpn.sh"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bsscco/point-fairy.git"
+  },
+  "author": "bsscco@gmail.com",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bsscco/point-fairy/issues"
+  },
+  "homepage": "https://github.com/bsscco/point-fairy#readme",
+  "dependencies": {
+    "axios": "^0.18.0",
+    "body-parser": "^1.18.3",
+    "express": "^4.16.4",
+    "googleapis": "^34.0.0",
+    "moment": "^2.22.2",
+    "promise-mysql": "^3.3.1",
+    "urlencode": "^1.1.0"
+  }
+}

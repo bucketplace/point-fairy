@@ -1,0 +1,9 @@
+.idea/
+node_modules/
+config.json
+data_schema.json
+db-query.js
+deployvpn.sh
+google-service-account.json
+package-lock.json
+sshvpn.sh
