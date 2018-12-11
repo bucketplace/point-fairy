@@ -7,7 +7,7 @@
     "start": "node app.js",
     "ssh": "sudo gcloud compute ssh instance-1",
     "sshvpn" : "./sshvpn.sh",
-    "deploy": "sudo gcloud compute scp --recurse *.json *.js *.sh instance-1:/home/bsscco/point-fairy",
+    "deploy": "sudo gcloud compute scp --recurse config.json package.json google-service-account.json app.js chkproc.sh instance-1:/home/bsscco/point-fairy",
     "deployvpn" : "./deployvpn.sh"
   },
   "repository": {
