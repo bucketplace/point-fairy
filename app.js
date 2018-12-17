@@ -674,10 +674,6 @@ function makePointNotiDlgPayload() {
 }
 
 function makePointNotiMsgPayload(slackUsers, channel, reward_kind, content) {
-    /*TODO 테스트 코드*/
-    config.slack.noti_channel_id = 'CDWKRAHEE';
-    /*END*/
-
     let mentions = '';
     slackUsers.forEach(slackUser => {
         if (content.includes('@' + slackUser.profile.display_name)) {
@@ -710,6 +706,11 @@ function makePointNotiMsgPayload(slackUsers, channel, reward_kind, content) {
             '고마워 버그캐쳐~!~!',
         })
     }
+
+    /*TODO 테스트 코드*/
+    json.channel = 'CDWKRAHEE';
+    /*END*/
+
     return json;
 }
 
