@@ -255,7 +255,25 @@ app.post('/interact', (req, res) => {
 
                 return appendCardSharings(moment().format('YYYY-MM-DD'), mySlackUser.profile.display_name, cardUrls);
             })
-            .then(chainResults => updateCheckStatus(myCheckStatus, [['NONE', moment().format('YYYY-MM-DD'), myCheckStatus.order_option_ids]]))
+            .then(chainResults => {
+                let newStatus = 'NONE';
+                if ((moment().year() == 2018 && moment().month() == 11/*12월*/) || (moment().year() == 2019 && moment().month() == 0/*1월*/)) {
+                    if (['보카', '수잔', '제이슨', '바로', '테오', '해옥', '이본', '자넷', '신디', '예예', '밍구'].includes(mySlackUser.profile.display_name)) {
+                        newStatus = 'BAN_POINT';
+                    }
+                }
+                else if (moment().year() == 2019 && moment().month() == 1/*2월*/) {
+                    if (['제이슨', '바로', '테오', '해옥', '이본', '자넷', '신디', '예예', '밍구'].includes(mySlackUser.profile.display_name)) {
+                        newStatus = 'BAN_POINT';
+                    }
+                }
+                else if (moment().year() == 2019 && moment().month() == 2/*3월*/) {
+                    if (['해옥', '이본', '자넷', '신디', '예예', '밍구'].includes(mySlackUser.profile.display_name)) {
+                        newStatus = 'BAN_POINT';
+                    }
+                }
+                return updateCheckStatus(myCheckStatus, [[newStatus, moment().format('YYYY-MM-DD'), myCheckStatus.order_option_ids]]);
+            })
             .then(res => getCardImgUrls(cardUrls))
             .then(res => sendSlackMsg(body.response_url, makeCardSharedMsgPayload(mySlackUser, res)))
             .then(res => console.log(res.data))
@@ -398,6 +416,9 @@ function appendCardSharings(createdAt, nickname, linkUrls) {
 }
 
 function appendCardSharing(createdAt, nickname, linkUrl) {
+    if(linkUrl.includes('?')) {
+        linkUrl = linkUrl.split('?')[0];
+    }
     const requestBody = {
         values: [[createdAt, nickname, linkUrl]]
     };
@@ -488,7 +509,7 @@ function openSlackDlg(triggerId, payload) {
 
 function makeNewPointDMPayload(slackUserCheckStatus) {
     /*TODO 테스트 코드*/
-    slackUserCheckStatus.slackUser.id = 'CDWKRAHEE';
+    // slackUserCheckStatus.slackUser.id = 'CDWKRAHEE';
     /*END*/
 
     return {
@@ -512,7 +533,7 @@ function makeNewPointDMPayload(slackUserCheckStatus) {
 
 function makeDeliveryCompletedDMPayload(slackUserCheckStatus) {
     /*TODO 테스트 코드*/
-    slackUserCheckStatus.slackUser.id = 'CDWKRAHEE';
+    // slackUserCheckStatus.slackUser.id = 'CDWKRAHEE';
     /*END*/
 
     const json = {
@@ -563,7 +584,7 @@ function makeDeliveryCompletedDMPayload(slackUserCheckStatus) {
 
 function make3MonthsGoneRemindDMPayload(slackUserCheckStatus) {
     /*TODO 테스트 코드*/
-    slackUserCheckStatus.slackUser.id = 'CDWKRAHEE';
+    // slackUserCheckStatus.slackUser.id = 'CDWKRAHEE';
     /*END*/
 
     const json = {
@@ -612,7 +633,7 @@ function make3MonthsGoneRemindDMPayload(slackUserCheckStatus) {
 
 function makePointBanDMPayload(slackUserCheckStatus) {
     /*TODO 테스트 코드*/
-    slackUserCheckStatus.slackUser.id = 'CDWKRAHEE';
+    // slackUserCheckStatus.slackUser.id = 'CDWKRAHEE';
     /*END*/
 
     const json = {
@@ -678,7 +699,7 @@ function makePointNotiMsgPayload(slackUsers, channel, reward_kind, content) {
     slackUsers.forEach(slackUser => {
         if (content.includes('@' + slackUser.profile.display_name)) {
             content = content.replace('@' + slackUser.profile.display_name, '<@' + slackUser.id + '>');
-            if(mentions.length >= 1) {
+            if (mentions.length >= 1) {
                 mentions += ', ';
             }
             mentions += slackUser.profile.display_name;
@@ -708,7 +729,7 @@ function makePointNotiMsgPayload(slackUsers, channel, reward_kind, content) {
     }
 
     /*TODO 테스트 코드*/
-    json.channel = 'CDWKRAHEE';
+    // json.channel = 'CDWKRAHEE';
     /*END*/
 
     return json;
@@ -828,6 +849,9 @@ function getCardImgUrls(cardUrls) {
 }
 
 function getCardImgUrl(url) {
+    if(url.includes('?')) {
+        url = url.split('?')[0];
+    }
     let jsonUrl;
     let isCollection;
     if (url.includes('/contents/card_collections/')) {
@@ -851,3 +875,5 @@ app.listen(PORT, () => {
     console.log(`App listening on port ${PORT}`);
     console.log('Press Ctrl+C to quit.');
 });
+
+getCardImgUrl('https://ohou.se/contents/card_collections/355508?affect_id=0&affect_type=CardIndex')
