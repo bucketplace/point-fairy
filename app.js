@@ -258,17 +258,17 @@ app.post('/interact', (req, res) => {
             .then(chainResults => {
                 let newStatus = 'NONE';
                 if ((moment().year() == 2018 && moment().month() == 11/*12월*/) || (moment().year() == 2019 && moment().month() == 0/*1월*/)) {
-                    if (['보카', '수잔', '제이슨', '바로', '테오', '해옥', '이본', '자넷', '신디', '예예', '밍구'].includes(mySlackUser.profile.display_name)) {
+                    if (['우디', '엘리', '카일', '찬스', '로지', '무니', '이서', '듀공', '보카', '수잔', '스프', '루이', '제이슨', '바로', '테오', '해옥', '이본', '자넷', '신디', '예예', '밍구', '토니', '레니'].includes(mySlackUser.profile.display_name)) {
                         newStatus = 'BAN_POINT';
                     }
                 }
                 else if (moment().year() == 2019 && moment().month() == 1/*2월*/) {
-                    if (['제이슨', '바로', '테오', '해옥', '이본', '자넷', '신디', '예예', '밍구'].includes(mySlackUser.profile.display_name)) {
+                    if (['스프', '루이', '제이슨', '바로', '테오', '해옥', '이본', '자넷', '신디', '예예', '밍구', '토니', '레니'].includes(mySlackUser.profile.display_name)) {
                         newStatus = 'BAN_POINT';
                     }
                 }
                 else if (moment().year() == 2019 && moment().month() == 2/*3월*/) {
-                    if (['해옥', '이본', '자넷', '신디', '예예', '밍구'].includes(mySlackUser.profile.display_name)) {
+                    if (['해옥', '이본', '자넷', '신디', '예예', '밍구', '토니', '레니'].includes(mySlackUser.profile.display_name)) {
                         newStatus = 'BAN_POINT';
                     }
                 }
@@ -416,7 +416,7 @@ function appendCardSharings(createdAt, nickname, linkUrls) {
 }
 
 function appendCardSharing(createdAt, nickname, linkUrl) {
-    if(linkUrl.includes('?')) {
+    if (linkUrl.includes('?')) {
         linkUrl = linkUrl.split('?')[0];
     }
     const requestBody = {
@@ -678,14 +678,14 @@ function makePointNotiDlgPayload() {
                 optional: false,
                 options: [
                     {label: '아이데이션 리워드', value: 'ideation'},
-                    {label: '버그 리워드', value: 'bug'}
+                    {label: '오류 리워드', value: 'bug'}
                 ]
             },
             {
                 type: 'textarea',
                 label: '내용',
                 name: 'content',
-                placeholder: '@미나x2 @우디 @비스코 님에게 버그신고 포인트, @미나 님에게 아이데이션 포인트',
+                placeholder: '@미나x2 @우디 @비스코 님에게 오류신고 포인트, @미나 님에게 아이데이션 포인트',
                 value: null,
                 optional: false,
             }
@@ -722,9 +722,9 @@ function makePointNotiMsgPayload(slackUsers, channel, reward_kind, content) {
         json.attachments.push({
             title: '안녕:the_horns::skin-tone-3: 오집요정이야!',
             color: '#35c5f0',
-            text: content + '\n' + '이번달 ' + mentions + '가 버그를 찾아줬어!\n' +
+            text: content + '\n' + '이번달 ' + mentions + '가 오류를 찾아줬어!\n' +
             '500포인트씩 선물로 줄게!\n' +
-            '고마워 버그캐쳐~!~!',
+            '고마워 오류캐쳐~!~!',
         })
     }
 
@@ -849,7 +849,7 @@ function getCardImgUrls(cardUrls) {
 }
 
 function getCardImgUrl(url) {
-    if(url.includes('?')) {
+    if (url.includes('?')) {
         url = url.split('?')[0];
     }
     let jsonUrl;
@@ -875,5 +875,3 @@ app.listen(PORT, () => {
     console.log(`App listening on port ${PORT}`);
     console.log('Press Ctrl+C to quit.');
 });
-
-getCardImgUrl('https://ohou.se/contents/card_collections/355508?affect_id=0&affect_type=CardIndex')
