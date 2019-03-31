@@ -29,6 +29,9 @@ app.get('/dm/new-point', (req, res) => {
         .then(() => getSlackUserCheckStatuses())
         .then(slackUserCheckStatuses => {
             slackUserCheckStatuses.forEach(slackUserCheckStatus => {
+                if (slackUserCheckStatus.slackUser.id !== 'U7FUJR36D') {
+                    return;
+                }
                 if (slackUserCheckStatus.checkStatus.status !== 'BAN_POINT') {
                     sendSlackMsg('', makeNewPointDMPayload(slackUserCheckStatus))
                         .then(res => console.log(res.data))
@@ -255,25 +258,7 @@ app.post('/interact', (req, res) => {
 
                 return appendCardSharings(moment().format('YYYY-MM-DD'), mySlackUser.profile.display_name, cardUrls);
             })
-            .then(chainResults => {
-                let newStatus = 'NONE';
-                if ((moment().year() == 2018 && moment().month() == 11/*12월*/) || (moment().year() == 2019 && moment().month() == 0/*1월*/)) {
-                    if (['우디', '엘리', '카일', '찬스', '로지', '무니', '이서', '듀공', '보카', '수잔', '스프', '루이', '제이슨', '바로', '테오', '해옥', '이본', '자넷', '신디', '예예', '밍구', '토니', '레니'].includes(mySlackUser.profile.display_name)) {
-                        newStatus = 'BAN_POINT';
-                    }
-                }
-                else if (moment().year() == 2019 && moment().month() == 1/*2월*/) {
-                    if (['스프', '루이', '제이슨', '바로', '테오', '해옥', '이본', '자넷', '신디', '예예', '밍구', '토니', '레니'].includes(mySlackUser.profile.display_name)) {
-                        newStatus = 'BAN_POINT';
-                    }
-                }
-                else if (moment().year() == 2019 && moment().month() == 2/*3월*/) {
-                    if (['해옥', '이본', '자넷', '신디', '예예', '밍구', '토니', '레니'].includes(mySlackUser.profile.display_name)) {
-                        newStatus = 'BAN_POINT';
-                    }
-                }
-                return updateCheckStatus(myCheckStatus, [[newStatus, moment().format('YYYY-MM-DD'), myCheckStatus.order_option_ids]]);
-            })
+            .then(chainResults => updateCheckStatus(myCheckStatus, [['NONE', moment().format('YYYY-MM-DD'), myCheckStatus.order_option_ids]]))
             .then(res => getCardImgUrls(cardUrls))
             .then(res => sendSlackMsg(body.response_url, makeCardSharedMsgPayload(mySlackUser, res)))
             .then(res => console.log(res.data))
@@ -509,8 +494,50 @@ function openSlackDlg(triggerId, payload) {
 
 function makeNewPointDMPayload(slackUserCheckStatus) {
     /*TODO 테스트 코드*/
-    // slackUserCheckStatus.slackUser.id = 'CDWKRAHEE';
+    // slackUserCheckStatus.slackUser.id = 'CASU375FD';
     /*END*/
+
+    const textList = [];
+    if (moment().month() == 2 || moment().month() == 3) /*3,4월*/{
+        textList.push(
+            '봄봄봄~ 봄이 왔어요~:cherry_blossom::cherry_blossom::cherry_blossom:\n' +
+            '오집요정도 왔찌욥:yojeong:! 꾸미기포인트도 가지고 왔찌:raised_hands::skin-tone-3:!\n' +
+            '드디어 봄이 왔어~!\n' +
+            '이번 달은 방 분위기를 :cherry_blossom:봄:cherry_blossom:처럼 바꾸는 건 어떨까?\n' +
+            '예뿌게 꾸미고 "오늘의집"에 자랑해보자~:tada::tada:\n' +
+            '저번에도 알려줬듯이 포인트 사용 후 리뷰, 사진을 남기지 않을 경우\n' +
+            '난 다시 나타날 수 없으니 꼭 기억해줘!!\n' +
+            '포인트의 유효기간은 4개월이니 잊지말고~!\n' +
+            '그럼 다음달까지 빠빠룽 :wave::skin-tone-4::wave::skin-tone-5::wave::skin-tone-6:'
+        );
+    } else {
+        textList.push(
+            '내가 주는 꾸미기포인트로 집을 예쁘게 꾸며주면 좋겠어 :slightly_smiling_face:\n' +
+            '"오늘의집"에 예쁜 사진도 올리고 리뷰도 쓰면서 좀 더 풍성한 오늘의집을 만들어나가자~~!\n' +
+            '포인트 사용 후 리뷰, 사진을 남기지 않을 경우 난 다시 나타날 수 없으니 꼭 기억해줘:pray::skin-tone-3:\n' +
+            '포인트의 유효기간은 4개월이니 잊지말고 꼭 사용하도록~!~!\n' +
+            '우리도 예쁜 집에 살 수 있어~! 빠빠룽:wave::skin-tone-3::wave::skin-tone-3::wave::skin-tone-3:\n'
+        );
+        textList.push(
+            '놐놐~! 오집요정 입니다~! 포인트 배달:love_letter: 왔어요~:tada:\n' +
+            '잘 지내써?! 이번 달도 어김없이 찾아온 오집요정이야:yojeong::the_horns::skin-tone-3:\n' +
+            '지난달은 어땠어? 방 좀 바꿔봤어?:laughing:\n' +
+            '아직이라면 이번 달엔 꼭 꾸미기포인트를 사용하러 가보자아~!\n' +
+            '`https://ohou.se/store?wedding=true`\n' +
+            '사용 후 예쁜 사진 공유하고 리뷰 남기는거 잊지 말기~~:raised_hands::skin-tone-3:\n' +
+            '그럼 난 담달에 돌아올께!!! 빠빠룽:woman-raising-hand::skin-tone-3:'
+        );
+        textList.push(
+            '새로운 한달 ver\n' +
+            '하!히!후!헤!호!!! 하이욥:raised_hands::skin-tone-3: 오집요정이예욥:female_fairy::skin-tone-3:\n' +
+            '새로운 한 달이 시작 되었어!! 그렇담 뭐다?\n' +
+            '꾸미기포인트다~~~!!!!:money_mouth_face::money_mouth_face::money_mouth_face:\n' +
+            '잊지 않고 전달 하러 나타났찌요~~!!!!\n' +
+            '이번 달도 집을 예뿌게 꾸며보자~!:laughing::laughing:\n' +
+            '다음 달도 나와 만나고 싶다면 사진, 리뷰 업로드 잊지말구!!\n' +
+            '그럼 이번 달도 화이팅하고 난 이만 가볼게~~:yojeong::the_horns::skin-tone-3:'
+        )
+    }
 
     return {
         channel: slackUserCheckStatus.slackUser.id,
@@ -520,12 +547,7 @@ function makeNewPointDMPayload(slackUserCheckStatus) {
                 title: '안녕:wave::skin-tone-3:! 난 오집요정:male_fairy::skin-tone-3:, 꾸미기포인트를 주려고 나타났지!:tada:',
                 color: '#35c5f0',
                 image_url: 'https://image.ohou.se/image/resize/bucketplace-v2-development/uploads-cards-projects-1544438851346_CL9EV2.jpg/2560/none',
-                text:
-                '내가 주는 꾸미기포인트로 집을 예쁘게 꾸며주면 좋겠어 :slightly_smiling_face:\n' +
-                '"오늘의집"에 예쁜 사진도 올리고 리뷰도 쓰면서 좀 더 풍성한 오늘의집을 만들어나가자~~!\n' +
-                '포인트 사용 후 리뷰, 사진을 남기지 않을 경우 난 다시 나타날 수 없으니 꼭 기억해줘:pray::skin-tone-3:\n' +
-                '포인트의 유효기간은 4개월이니 잊지말고 꼭 사용하도록~!~!\n' +
-                '우리도 예쁜 집에 살 수 있어~! 빠빠룽:wave::skin-tone-3::wave::skin-tone-3::wave::skin-tone-3:\n'
+                text: textList[parseInt(Math.random() * 10 % textList.length)]
             }
         ]
     };
