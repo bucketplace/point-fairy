@@ -29,9 +29,6 @@ app.get('/dm/new-point', (req, res) => {
         .then(() => getSlackUserCheckStatuses())
         .then(slackUserCheckStatuses => {
             slackUserCheckStatuses.forEach(slackUserCheckStatus => {
-                if (slackUserCheckStatus.slackUser.id !== 'U7FUJR36D') {
-                    return;
-                }
                 if (slackUserCheckStatus.checkStatus.status !== 'BAN_POINT') {
                     sendSlackMsg('', makeNewPointDMPayload(slackUserCheckStatus))
                         .then(res => console.log(res.data))
