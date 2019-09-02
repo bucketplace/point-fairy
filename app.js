@@ -22,23 +22,6 @@ app.get('/', (req, res) => {
     res.status(200).send('Hello, PointFairy!!').end();
 });
 
-app.get('/dm/new-point', (req, res) => {
-    res.sendStatus(200);
-
-    getGoogleApiAccessToken()
-        .then(() => getSlackUserCheckStatuses())
-        .then(slackUserCheckStatuses => {
-            slackUserCheckStatuses.forEach(slackUserCheckStatus => {
-                if (slackUserCheckStatus.checkStatus.status !== 'BAN_POINT') {
-                    sendSlackMsg('', makeNewPointDMPayload(slackUserCheckStatus))
-                        .then(res => console.log(res.data))
-                        .catch(err => console.log(err.message));
-                }
-            });
-        })
-        .catch(err => console.log(err.message));
-});
-
 app.get('/toss/delivery-completed', (req, res) => {
     res.sendStatus(200);
 
@@ -165,6 +148,24 @@ app.get('/dm/point-ban', (req, res) => {
                         .catch(err => console.log(err.message));
                 }
             })
+        })
+        .catch(err => console.log(err.message));
+});
+
+app.post('/command/new-point', (req, res) => {
+    console.log(req.body);
+    res.send('');
+
+    getGoogleApiAccessToken()
+        .then(() => getSlackUserCheckStatuses())
+        .then(slackUserCheckStatuses => {
+            slackUserCheckStatuses.forEach(slackUserCheckStatus => {
+                if (slackUserCheckStatus.checkStatus.status !== 'BAN_POINT') {
+                    sendSlackMsg('', makeNewPointDMPayload(slackUserCheckStatus))
+                        .then(res => console.log(res.data))
+                        .catch(err => console.log(err.message));
+                }
+            });
         })
         .catch(err => console.log(err.message));
 });
