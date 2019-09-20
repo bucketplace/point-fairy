@@ -16,7 +16,7 @@ const moment = require('moment');
 
 const app = express();
 app.use(bodyParser.urlencoded({extended: true}));
-app.use(bodyParser.json());
+app.use(bodyParser.json({limit: '50mb'}));
 
 app.get('/', (req, res) => {
     res.status(200).send('Hello, PointFairy!!').end();
@@ -101,7 +101,9 @@ app.post('/dm/3months-gone-remind', (req, res) => {
             // 모든 배송완료 추리기
             slackUserCheckStatuses.forEach(slackUserCheckStatus => {
                 allCompletedDeliveries.forEach(completedDelivery => {
-                    slackUserCheckStatus.completedDeliveries.push(completedDelivery);
+                    if (slackUserCheckStatus.checkStatus.user_id === String(completedDelivery.user_id)) {
+                        slackUserCheckStatus.completedDeliveries.push(completedDelivery);
+                    }
                 });
             });
 
