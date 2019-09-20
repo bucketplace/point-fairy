@@ -118,7 +118,9 @@ app.post('/dm/3months-gone-remind', (req, res) => {
             // 모든 배송완료 추리기
             slackUserCheckStatuses.forEach(slackUserCheckStatus => {
                 allCompletedDeliveries.forEach(completedDelivery => {
-                    slackUserCheckStatus.completedDeliveries.push(completedDelivery);
+                    if (slackUserCheckStatus.checkStatus.user_id === String(completedDelivery.user_id)) {
+                        slackUserCheckStatus.completedDeliveries.push(completedDelivery);
+                    }
                 });
             });
 
