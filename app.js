@@ -16,7 +16,7 @@ const moment = require('moment');
 
 const app = express();
 app.use(bodyParser.urlencoded({extended: true}));
-app.use(bodyParser.json());
+app.use(bodyParser.json({limit: '50mb'}));
 
 app.get('/', (req, res) => {
     res.status(200).send('Hello, PointFairy!!').end();
