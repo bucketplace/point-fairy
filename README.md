@@ -9,13 +9,13 @@ WebStorm, Node, Express, Axios, GCP Compute Engine, crontab, Google SpreadSheet 
 $ chmod 777 chkproc.sh
 $ crontab -e
 $ * * * * * /home/bsscco/point-fairy/chkproc.sh > /home/bsscco/point-fairy/crontab-chkproc.log 2>&1
-$ * * * * * /home/bucketvpn/point-fairy/chkprocvpn.sh > /home/bucketvpn/point-fairy/crontab-chkprocvpn.log 2>&1
+$ * * * * * /home/ubuntu/point-fairy/chkprocvpn.sh > /home/ubuntu/point-fairy/crontab-chkprocvpn.log 2>&1
 ```
 
 ### crontab 예약
 ```
 $ crontab -e
-$ */5 10-17 * * 1-5 curl localhost:12000/toss/delivery-completed > /home/bucketvpn/point-fairy/crontab-curl-2.log 2>&1
+$ */5 10-17 * * 1-5 curl localhost:12000/toss/delivery-completed > /home/ubuntu/point-fairy/crontab-curl-2.log 2>&1
 $ 0 13 * * 1-5 curl localhost:12000/dm/3months-gone-remind > /home/bsscco/point-fairy/crontab-curl-3.log 2>&1
 $ 0 13 * * 1-5 curl localhost:12000/dm/point-ban > /home/bsscco/poin-tfairy/crontab-curl-4.log 2>&1
 ```
