@@ -22,7 +22,7 @@ app.get('/', (req, res) => {
     res.status(200).send('Hello, PointFairy!!').end();
 });
 
-app.get('/toss/delivery-completed', (req, res) => {
+app.post('/toss/delivery-completed', (req, res) => {
     res.sendStatus(200);
 
     let checkStatuses;
@@ -128,7 +128,7 @@ app.post('/dm/3months-gone-remind', (req, res) => {
         .catch(err => console.log(err.message));
 });
 
-app.get('/dm/point-ban', (req, res) => {
+app.post('/dm/point-ban', (req, res) => {
     res.sendStatus(200);
 
     getGoogleApiAccessToken()
@@ -666,7 +666,7 @@ function makePointBanDMPayload(slackUserCheckStatus) {
     json.attachments.push({
         title: '오집요정 등장이오!:the_horns::skin-tone-3:',
         color: '#35c5f0',
-        text: '안타깝게도 우디가 약속을 지켜주지 않아서\n' +
+        text: '안타깝게도 ' + slackUserCheckStatus.slackUser.profile.display_name + '가 약속을 지켜주지 않아서\n' +
         '담달에는 포인트를 줄 수 없게 되었어(유감:pepe:)\n' +
         '하지만 언제든 사진을 업로드 해준다면 다음달엔 포인트를 가지고 와줄게!!',
     });
